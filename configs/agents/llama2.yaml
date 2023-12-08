@@ -1,0 +1,22 @@
+module: src.agents.HTTPAgent
+parameters:
+    name: "openchat_v3.2_super" #"codellama2-13b" # Necessary
+    # url: http://localhost:8000/v1/chat/completions
+    url:  http://localhost:18888/v1/chat/completions
+    headers: # header dict pairs that your server needs
+        Content-Type: application/json
+    body: # body dict pairs that your server needs
+        model: openchat_v3.2_super #codellama2-13b
+        # Key1: Value1
+        Key2: Value2
+    prompter:
+        name: role_content_dict
+        args:
+            agent_role: assistant
+# module: "src.agents.FastChatAgent"
+# parameters:
+#     model_name: llama-2-7b-chat-hf
+#     controller_address:  http://localhost:21002
+#     max_new_tokens: 128
+#     temperature: 0 
+#     top_p: 0python create_assignment.py \

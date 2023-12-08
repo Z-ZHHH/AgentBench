@@ -19,6 +19,7 @@ def interaction(agent: AgentClient):
             print("================= USER  ===================")
             user = input(">>> ")
             history.append({"role": "user", "content": user})
+            # print(agent.inference([{"role": "user", "content": 'hhah'}]))
             try:
                 agent_response = agent.inference(history)
                 print("================ AGENT ====================")

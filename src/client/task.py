@@ -22,11 +22,13 @@ class TaskClient:
         self.name = name
         self.controller_address = controller_address
         print("TaskClient created: {} ({})".format(name, controller_address))
+        # a = input("You Have To Input SOMETHING")
 
     def get_indices(self) -> List[SampleIndex]:
         result = requests.get(
             self.controller_address + "/get_indices", params={"name": self.name}
         )
+        print(result)
         if result.status_code != 200:
             raise AgentBenchException(result.text, result.status_code, self.name)
         return result.json()
@@ -53,6 +55,7 @@ class TaskClient:
 
     def run_sample(self, index: SampleIndex, agent: AgentClient) -> TaskClientOutput:
         try:
+            print(self.controller_address + "/start_sample")
             result = requests.post(
                 self.controller_address + "/start_sample",
                 json=StartSampleRequest(name=self.name, index=index).dict(),
@@ -70,10 +73,15 @@ class TaskClient:
         result = result.json()
         sid = result["session_id"]
         latest_result = result
+
+        # print(result)
+        # print(result)
         while SampleStatus(result["output"]["status"]) == SampleStatus.RUNNING:
             try:
                 content = agent.inference(result["output"]["history"])
+                # print(content)
                 response = AgentOutput(content=content)
+                # print(response)  # 转译agent的输出
             except AgentContextLimitException:
                 response = AgentOutput(status=AgentOutputStatus.AGENT_CONTEXT_LIMIT)
             except Exception as e:

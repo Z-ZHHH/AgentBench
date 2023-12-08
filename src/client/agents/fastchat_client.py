@@ -173,6 +173,7 @@ class FastChatAgent(AgentClient):
                     stream=True,
                     timeout=120,
                 )
+                # print(response)
                 text = ""
                 for line in response.iter_lines(decode_unicode=False, delimiter=b"\0"):
                     if line:

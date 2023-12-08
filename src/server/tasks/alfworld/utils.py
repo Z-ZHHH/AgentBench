@@ -59,3 +59,14 @@ def load_config(config_file):
     with open(config_file) as reader:
         config = yaml.safe_load(reader)
     return config
+
+def process_info(input, match_str):
+    output = None
+    match = re.search(match_str + ":(.*)\n", input)
+    if match:
+        output = match.group(1)
+    else:
+        match = re.search(match_str + ":(.*)", input)
+        if match:
+            output = match.group(1)
+    return output

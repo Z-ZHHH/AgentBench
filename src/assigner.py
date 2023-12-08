@@ -128,6 +128,7 @@ class Assigner:
         )
 
         for agent in self.remaining_tasks:
+            
             agent_ = json.dumps(agent)
             tasks_ = len(self.remaining_tasks[agent])
             samples_ = sum(
@@ -151,9 +152,10 @@ class Assigner:
                 )
 
         # Create agents
-
+        
         for agent in self.remaining_tasks:
             self.agents[agent] = self.config.definition.agent[agent].create()
+
 
     def get_output_dir(self, agent: str, task: str) -> str:
         return os.path.join(self.config.output, agent, task)
@@ -244,6 +246,7 @@ class Assigner:
             ]
         )
         generator = self.worker_generator()
+        
         self.overall_tqdm = tqdm(
             total=self.started_count,
             desc="Total",
@@ -262,12 +265,14 @@ class Assigner:
                 position=idx + 1,
                 file=tqdm_out,
             )
+        
         while True:
             try:
                 agent, task, index = next(generator)
             except StopIteration:
                 break
             self.start_worker(agent, task, index, self.finish_callback)
+
 
         self.overall_tqdm.close()
         for agent in self.tqdm_ordered_by_agent:
@@ -370,6 +375,8 @@ class Assigner:
             with self.assignment_lock:
                 self.finished_count += 1
             self.record_completion(agent, task, index, result.output)
+            # print(666666666666666)
+            # a = input("You Have To Input SOMETHING")
             self.overall_tqdm.update(1)
             self.tqdm_ordered_by_agent[agent].update(1)
         else:
@@ -393,7 +400,7 @@ class Assigner:
     ):
         def worker_thread():
             nonlocal agent, task, index, finish_callback
-
+            # self.tasks[task] = self.config.definition.task[task].create()
             result = self.tasks[task].run_sample(index, self.agents[agent])
 
             if finish_callback:

@@ -22,6 +22,7 @@ class SingleAlfredTWEnv(AlfredTWEnv):
 
     def __init__(self, config, name, train_eval="eval_out_of_distribution"):
         print("Initializing AlfredTWEnv...")
+        # a = input("You Have To Input SOMETHING")
         self.config = config
         self.train_eval = train_eval
 
